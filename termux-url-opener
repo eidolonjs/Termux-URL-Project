@@ -40,7 +40,7 @@ test -f  "./.spotdl_album"  && rm "./.spotdl_album.txt"
 else
 if [ "$n" == '6' ]; then
 [ ! -d "./storage/shared/media/youtube-dl" ] && mkdir "./storage/shared/media/youtube-dl"
-youtube-dlc -no-mtime --format "(bestaudio[acodec^=opus]/bestaudio)/best" --force-ipv4 --ignore-errors --no-continue --no-overwrites --merge-output-format "mkv" --extract-audio --audio-format "mp3" --audio-quality 0 "$url" -o "./storage/shared/media/youtube-dl/%(title)s.%(ext)s"
+youtube-dlc -no-mtime --format "(bestaudio[acodec^=opus]/bestaudio)/best" --force-ipv4 --ignore-errors --no-continue --no-overwrites --merge-output-format "mkv" --extract-audio --audio-format "mp3" --audio-quality 0 --embed-thumbnail "$url" -o "./storage/shared/media/youtube-dl/%(title)s.%(ext)s"
 else
 if [ "$n" == '7' ]; then
 [ ! -d "./storage/shared/media/youtube-dl" ] && mkdir "./storage/shared/media/youtube-dl"
@@ -48,7 +48,7 @@ youtube-dl "$url" --no-mtime --format "(bestvideo[vcodec^=av01][height>=4320][fp
 else
 if [ "$n" == '8' ]; then
 [ ! -d "./storage/shared/media/youtube-dl" ] && mkdir "./storage/shared/media/youtube-dl"
-youtube-dl -no-mtime --format "(bestaudio[acodec^=opus]/bestaudio)/best" --force-ipv4 --ignore-errors --no-continue --no-overwrites --merge-output-format "mkv" --extract-audio --audio-format "mp3" --audio-quality 0 "$url" -o "./storage/shared/media/youtube-dl/%(title)s.%(ext)s"
+youtube-dl -no-mtime --format "(bestaudio[acodec^=opus]/bestaudio)/best" --force-ipv4 --ignore-errors --no-continue --no-overwrites --merge-output-format "mkv" --extract-audio --audio-format "mp3" --audio-quality 0 --embed-thumbnail "$url" -o "./storage/shared/media/youtube-dl/%(title)s.%(ext)s"
 else 
 if [ "$n" == '9' ]; then
 [ ! -d "./storage/shared/media/youtube-dl" ] && mkdir "./storage/shared/media/youtube-dl"
