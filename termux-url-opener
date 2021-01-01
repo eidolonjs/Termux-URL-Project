@@ -1,0 +1,89 @@
+#!/bin/bash
+clear
+url=$1
+echo "All-in-one Download Script by C-Rock"
+echo "----------Last updated 1 Jan 2021-----------"
+echo "--------------------------------------------"
+echo "1: Download with youtube-dlc"
+echo "2: Download with ffmpeg(m3u8/m3u)"
+echo "3: Download page with wget (Recursive)"
+echo "4: Download files with wget (Recursive)"
+echo "5: Download with spotdl (Spotify All-in-one)"
+echo "6: Download with youtube-dlc and extract audio"
+echo "7: Download with youtube-dl"
+echo "8: Download with youtube-dl and extract audio"
+echo "9: Download with youtube-dl and embed all subtitles"
+echo "10: Download with youtube-dlc and embed all subtitles"
+echo "11: Download with youtube-dl and embed subtitle"
+echo "12: Download with youtube-dlc and embed subtitle"
+echo "13: Download with you-get"
+echo "Default: Download with youtube-dlc"
+read n
+if [ "$n" == '2' ]; then
+echo "Output Filename:"
+read name
+ffmpeg -i "$url" -c copy -bsf:a aac_adtstoasc ./storage/shared/media/"$name"
+else
+if [ "$n" == '3' ]; then
+wget -P "./storage/shared/media/wget/" -c --mirror  --recursive --no-clobber  --page-requisites --html-extension --convert-links -e robots=off --restrict-file-names=windows --no-parent "$url"
+else
+if [ "$n" == '4' ]; then
+wget -P "./storage/shared/media/wget/" -c --mirror  --recursive --no-clobber  -e robots=off --restrict-file-names=windows --no-parent -R "index.html*" "$url"
+else
+if [ "$n" == '5' ]; then 
+[ ! -d "./storage/shared/media/spotdl" ] && mkdir "./storage/shared/media/spotdl"
+test -f  "./.spotdl_playlist"  && rm "./.spotdl_playlist.txt"
+test -f  "./.spotdl_album"  && rm "./.spotdl_album.txt"
+[[ $url == *"track"* ]] && spotdl --output-file "./storage/shared/media/spotdl/{artist}/{artist} - {track-name}.{output-ext}" --song "$url" -q best --output-ext mp3
+[[ $url == *"playlist"* ]] && spotdl --playlist "$url" --write-to  "./.spotdl_playlist.txt"  && spotdl --output-file "./storage/shared/media/spotdl/{artist}/{artist} - {track-name}.{output-ext}" --list "./.spotdl_playlist.txt" -q best --output-ext mp3 && rm -f "./.spotdl_playlist.txt"
+[[ $url == *"album"* ]] && spotdl --album "$url" --write-to  "./.spotdl_album.txt" && spotdl --output-file "./storage/shared/media/spotdl/{artist}/{album}/{artist} - {track-name}.{output-ext}" --list "./.spotdl_album.txt" -q best --output-ext mp3 && rm -f "./.spotdl_album.txt"
+else
+if [ "$n" == '6' ]; then
+[ ! -d "./storage/shared/media/youtube-dl" ] && mkdir "./storage/shared/media/youtube-dl"
+youtube-dlc -no-mtime --format "(bestaudio[acodec^=opus]/bestaudio)/best" --force-ipv4 --ignore-errors --no-continue --no-overwrites --merge-output-format "mkv" --extract-audio --audio-format "mp3" --audio-quality 0 "$url" -o "./storage/shared/media/youtube-dl/%(title)s.%(ext)s"
+else
+if [ "$n" == '7' ]; then
+[ ! -d "./storage/shared/media/youtube-dl" ] && mkdir "./storage/shared/media/youtube-dl"
+youtube-dl "$url" --no-mtime --format "(bestvideo[vcodec^=av01][height>=4320][fps>30]/bestvideo[vcodec^=vp9.2][height>=4320][fps>30]/bestvideo[vcodec^=vp9][height>=4320][fps>30]/bestvideo[vcodec^=avc1][height>=4320][fps>30]/bestvideo[height>=4320][fps>30]/bestvideo[vcodec^=av01][height>=4320]/bestvideo[vcodec^=vp9.2][height>=4320]/bestvideo[vcodec^=vp9][height>=4320]/bestvideo[vcodec^=avc1][height>=4320]/bestvideo[height>=4320]/bestvideo[vcodec^=av01][height>=2880][fps>30]/bestvideo[vcodec^=vp9.2][height>=2880][fps>30]/bestvideo[vcodec^=vp9][height>=2880][fps>30]/bestvideo[vcodec^=avc1][height>=2880][fps>30]/bestvideo[height>=2880][fps>30]/bestvideo[vcodec^=av01][height>=2880]/bestvideo[vcodec^=vp9.2][height>=2880]/bestvideo[vcodec^=vp9][height>=2880]/bestvideo[vcodec^=avc1][height>=2880]/bestvideo[height>=2880]/bestvideo[vcodec^=av01][height>=2160][fps>30]/bestvideo[vcodec^=vp9.2][height>=2160][fps>30]/bestvideo[vcodec^=vp9][height>=2160][fps>30]/bestvideo[vcodec^=avc1][height>=2160][fps>30]/bestvideo[height>=2160][fps>30]/bestvideo[vcodec^=av01][height>=2160]/bestvideo[vcodec^=vp9.2][height>=2160]/bestvideo[vcodec^=vp9][height>=2160]/bestvideo[vcodec^=avc1][height>=2160]/bestvideo[height>=2160]/bestvideo[vcodec^=av01][height>=1440][fps>30]/bestvideo[vcodec^=vp9.2][height>=1440][fps>30]/bestvideo[vcodec^=vp9][height>=1440][fps>30]/bestvideo[vcodec^=avc1][height>=1440][fps>30]/bestvideo[height>=1440][fps>30]/bestvideo[vcodec^=av01][height>=1440]/bestvideo[vcodec^=vp9.2][height>=1440]/bestvideo[vcodec^=vp9][height>=1440]/bestvideo[vcodec^=avc1][height>=1440]/bestvideo[height>=1440]/bestvideo[vcodec^=av01][height>=1080][fps>30]/bestvideo[vcodec^=vp9.2][height>=1080][fps>30]/bestvideo[vcodec^=vp9][height>=1080][fps>30]/bestvideo[vcodec^=avc1][height>=1080][fps>30]/bestvideo[height>=1080][fps>30]/bestvideo[vcodec^=av01][height>=1080]/bestvideo[vcodec^=vp9.2][height>=1080]/bestvideo[vcodec^=vp9][height>=1080]/bestvideo[vcodec^=avc1][height>=1080]/bestvideo[height>=1080]/bestvideo[vcodec^=av01][height>=720][fps>30]/bestvideo[vcodec^=vp9.2][height>=720][fps>30]/bestvideo[vcodec^=vp9][height>=720][fps>30]/bestvideo[vcodec^=avc1][height>=720][fps>30]/bestvideo[height>=720][fps>30]/bestvideo[vcodec^=av01][height>=720]/bestvideo[vcodec^=vp9.2][height>=720]/bestvideo[vcodec^=vp9][height>=720]/bestvideo[vcodec^=avc1][height>=720]/bestvideo[height>=720]/bestvideo[vcodec^=av01][height>=480][fps>30]/bestvideo[vcodec^=vp9.2][height>=480][fps>30]/bestvideo[vcodec^=vp9][height>=480][fps>30]/bestvideo[vcodec^=avc1][height>=480][fps>30]/bestvideo[height>=480][fps>30]/bestvideo[vcodec^=av01][height>=480]/bestvideo[vcodec^=vp9.2][height>=480]/bestvideo[vcodec^=vp9][height>=480]/bestvideo[vcodec^=avc1][height>=480]/bestvideo[height>=480]/bestvideo[vcodec^=av01][height>=360][fps>30]/bestvideo[vcodec^=vp9.2][height>=360][fps>30]/bestvideo[vcodec^=vp9][height>=360][fps>30]/bestvideo[vcodec^=avc1][height>=360][fps>30]/bestvideo[height>=360][fps>30]/bestvideo[vcodec^=av01][height>=360]/bestvideo[vcodec^=vp9.2][height>=360]/bestvideo[vcodec^=vp9][height>=360]/bestvideo[vcodec^=avc1][height>=360]/bestvideo[height>=360]/bestvideo[vcodec^=av01][height>=240][fps>30]/bestvideo[vcodec^=vp9.2][height>=240][fps>30]/bestvideo[vcodec^=vp9][height>=240][fps>30]/bestvideo[vcodec^=avc1][height>=240][fps>30]/bestvideo[height>=240][fps>30]/bestvideo[vcodec^=av01][height>=240]/bestvideo[vcodec^=vp9.2][height>=240]/bestvideo[vcodec^=vp9][height>=240]/bestvideo[vcodec^=avc1][height>=240]/bestvideo[height>=240]/bestvideo[vcodec^=av01][height>=144][fps>30]/bestvideo[vcodec^=vp9.2][height>=144][fps>30]/bestvideo[vcodec^=vp9][height>=144][fps>30]/bestvideo[vcodec^=avc1][height>=144][fps>30]/bestvideo[height>=144][fps>30]/bestvideo[vcodec^=av01][height>=144]/bestvideo[vcodec^=vp9.2][height>=144]/bestvideo[vcodec^=vp9][height>=144]/bestvideo[vcodec^=avc1][height>=144]/bestvideo[height>=144]/bestvideo)+(bestaudio[acodec^=opus]/bestaudio)/best" --force-ipv4 --ignore-errors --no-continue --no-overwrites --embed-thumbnail --output "./storage/shared/media/youtube-dl/%(title)s - [%(height)sP].%(ext)s"
+else
+if [ "$n" == '8' ]; then
+[ ! -d "./storage/shared/media/youtube-dl" ] && mkdir "./storage/shared/media/youtube-dl"
+youtube-dl -no-mtime --format "(bestaudio[acodec^=opus]/bestaudio)/best" --force-ipv4 --ignore-errors --no-continue --no-overwrites --merge-output-format "mkv" --extract-audio --audio-format "mp3" --audio-quality 0 "$url" -o "./storage/shared/media/youtube-dl/%(title)s.%(ext)s"
+else 
+if [ "$n" == '9' ]; then
+[ ! -d "./storage/shared/media/youtube-dl" ] && mkdir "./storage/shared/media/youtube-dl"
+youtube-dl -c -i --all-subs --write-auto-sub --embed-subs  "$url" -o "./storage/shared/media/youtube-dl/%(title)s.%(ext)s"
+else
+if [ "$n" == '10' ]; then
+[ ! -d "./storage/shared/media/youtube-dl" ] && mkdir "./storage/shared/media/youtube-dl"
+youtube-dlc -c -i --all-subs --write-auto-sub --embed-subs  "$url" -o "./storage/shared/media/youtube-dl/%(title)s.%(ext)s"
+else
+if [ "$n" == '11' ]; then
+echo "Subtitle language (e.g. en, zh, ja) for download:"
+read lang
+[ ! -d "./storage/shared/media/youtube-dl" ] && mkdir "./storage/shared/media/youtube-dl"
+youtube-dl -c -i --write-auto-sub --embed-subs  --sub-lang="$lang" "$url" -o "./storage/shared/media/youtube-dl/%(title)s.%(ext)s"
+else
+if [ "$n" == '12' ]; then
+echo "Subtitle language (e.g. en, zh, ja) for download:"
+read lang
+[ ! -d "./storage/shared/media/youtube-dl" ] && mkdir "./storage/shared/media/youtube-dl"
+youtube-dlc -c -i --write-auto-sub --embed-subs  --sub-lang="$lang" "$url" -o "./storage/shared/media/youtube-dl/%(title)s.%(ext)s"
+else
+if [ "$n" == '13' ]; then
+[ ! -d "./storage/shared/media/you-get" ] && mkdir "./storage/shared/media/you-get"
+you-get -o "./storage/shared/media/you-get" "$url"
+else
+[ ! -d "./storage/shared/media/youtube-dl" ] && mkdir "./storage/shared/media/youtube-dl"
+youtube-dlc "$url" --no-mtime --format "(bestvideo[vcodec^=av01][height>=4320][fps>30]/bestvideo[vcodec^=vp9.2][height>=4320][fps>30]/bestvideo[vcodec^=vp9][height>=4320][fps>30]/bestvideo[vcodec^=avc1][height>=4320][fps>30]/bestvideo[height>=4320][fps>30]/bestvideo[vcodec^=av01][height>=4320]/bestvideo[vcodec^=vp9.2][height>=4320]/bestvideo[vcodec^=vp9][height>=4320]/bestvideo[vcodec^=avc1][height>=4320]/bestvideo[height>=4320]/bestvideo[vcodec^=av01][height>=2880][fps>30]/bestvideo[vcodec^=vp9.2][height>=2880][fps>30]/bestvideo[vcodec^=vp9][height>=2880][fps>30]/bestvideo[vcodec^=avc1][height>=2880][fps>30]/bestvideo[height>=2880][fps>30]/bestvideo[vcodec^=av01][height>=2880]/bestvideo[vcodec^=vp9.2][height>=2880]/bestvideo[vcodec^=vp9][height>=2880]/bestvideo[vcodec^=avc1][height>=2880]/bestvideo[height>=2880]/bestvideo[vcodec^=av01][height>=2160][fps>30]/bestvideo[vcodec^=vp9.2][height>=2160][fps>30]/bestvideo[vcodec^=vp9][height>=2160][fps>30]/bestvideo[vcodec^=avc1][height>=2160][fps>30]/bestvideo[height>=2160][fps>30]/bestvideo[vcodec^=av01][height>=2160]/bestvideo[vcodec^=vp9.2][height>=2160]/bestvideo[vcodec^=vp9][height>=2160]/bestvideo[vcodec^=avc1][height>=2160]/bestvideo[height>=2160]/bestvideo[vcodec^=av01][height>=1440][fps>30]/bestvideo[vcodec^=vp9.2][height>=1440][fps>30]/bestvideo[vcodec^=vp9][height>=1440][fps>30]/bestvideo[vcodec^=avc1][height>=1440][fps>30]/bestvideo[height>=1440][fps>30]/bestvideo[vcodec^=av01][height>=1440]/bestvideo[vcodec^=vp9.2][height>=1440]/bestvideo[vcodec^=vp9][height>=1440]/bestvideo[vcodec^=avc1][height>=1440]/bestvideo[height>=1440]/bestvideo[vcodec^=av01][height>=1080][fps>30]/bestvideo[vcodec^=vp9.2][height>=1080][fps>30]/bestvideo[vcodec^=vp9][height>=1080][fps>30]/bestvideo[vcodec^=avc1][height>=1080][fps>30]/bestvideo[height>=1080][fps>30]/bestvideo[vcodec^=av01][height>=1080]/bestvideo[vcodec^=vp9.2][height>=1080]/bestvideo[vcodec^=vp9][height>=1080]/bestvideo[vcodec^=avc1][height>=1080]/bestvideo[height>=1080]/bestvideo[vcodec^=av01][height>=720][fps>30]/bestvideo[vcodec^=vp9.2][height>=720][fps>30]/bestvideo[vcodec^=vp9][height>=720][fps>30]/bestvideo[vcodec^=avc1][height>=720][fps>30]/bestvideo[height>=720][fps>30]/bestvideo[vcodec^=av01][height>=720]/bestvideo[vcodec^=vp9.2][height>=720]/bestvideo[vcodec^=vp9][height>=720]/bestvideo[vcodec^=avc1][height>=720]/bestvideo[height>=720]/bestvideo[vcodec^=av01][height>=480][fps>30]/bestvideo[vcodec^=vp9.2][height>=480][fps>30]/bestvideo[vcodec^=vp9][height>=480][fps>30]/bestvideo[vcodec^=avc1][height>=480][fps>30]/bestvideo[height>=480][fps>30]/bestvideo[vcodec^=av01][height>=480]/bestvideo[vcodec^=vp9.2][height>=480]/bestvideo[vcodec^=vp9][height>=480]/bestvideo[vcodec^=avc1][height>=480]/bestvideo[height>=480]/bestvideo[vcodec^=av01][height>=360][fps>30]/bestvideo[vcodec^=vp9.2][height>=360][fps>30]/bestvideo[vcodec^=vp9][height>=360][fps>30]/bestvideo[vcodec^=avc1][height>=360][fps>30]/bestvideo[height>=360][fps>30]/bestvideo[vcodec^=av01][height>=360]/bestvideo[vcodec^=vp9.2][height>=360]/bestvideo[vcodec^=vp9][height>=360]/bestvideo[vcodec^=avc1][height>=360]/bestvideo[height>=360]/bestvideo[vcodec^=av01][height>=240][fps>30]/bestvideo[vcodec^=vp9.2][height>=240][fps>30]/bestvideo[vcodec^=vp9][height>=240][fps>30]/bestvideo[vcodec^=avc1][height>=240][fps>30]/bestvideo[height>=240][fps>30]/bestvideo[vcodec^=av01][height>=240]/bestvideo[vcodec^=vp9.2][height>=240]/bestvideo[vcodec^=vp9][height>=240]/bestvideo[vcodec^=avc1][height>=240]/bestvideo[height>=240]/bestvideo[vcodec^=av01][height>=144][fps>30]/bestvideo[vcodec^=vp9.2][height>=144][fps>30]/bestvideo[vcodec^=vp9][height>=144][fps>30]/bestvideo[vcodec^=avc1][height>=144][fps>30]/bestvideo[height>=144][fps>30]/bestvideo[vcodec^=av01][height>=144]/bestvideo[vcodec^=vp9.2][height>=144]/bestvideo[vcodec^=vp9][height>=144]/bestvideo[vcodec^=avc1][height>=144]/bestvideo[height>=144]/bestvideo)+(bestaudio[acodec^=opus]/bestaudio)/best" --force-ipv4 --ignore-errors --no-continue --no-overwrites --embed-thumbnail --output "./storage/shared/media/youtube-dl/%(title)s - [%(height)sP].%(ext)s" --merge-output-format "mkv"
+fi
+fi
+fi
+fi
+fi
+fi
+fi
+fi
+fi
+fi
+fi
