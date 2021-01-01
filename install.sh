@@ -10,3 +10,4 @@ yes | pip install youtube-dl && yes | pip install spotdl && yes | pip install yo
 wget -P "/data/data/com.termux/files/home/bin/" --no-check-certificate "https://raw.githubusercontent.com/eidolonjs/Termux-URL-Project/main/termux-url-opener" 
 chmod +x "/data/data/com.termux/files/home/bin/termux-url-opener"
 termux-setup-storage
+clear
