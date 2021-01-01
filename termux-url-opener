@@ -25,10 +25,10 @@ read name
 ffmpeg -i "$url" -c copy -bsf:a aac_adtstoasc ./storage/shared/media/"$name"
 else
 if [ "$n" == '3' ]; then
-wget -P "./storage/shared/media/wget/" -c --mirror  --recursive --no-clobber  --page-requisites --html-extension --convert-links -e robots=off --restrict-file-names=windows --no-parent "$url"
+wget -P "./storage/shared/media/wget/" -c --mirror --recursive --page-requisites --html-extension --convert-links -e robots=off --restrict-file-names=windows --no-parent "$url"
 else
 if [ "$n" == '4' ]; then
-wget -P "./storage/shared/media/wget/" -c --mirror  --recursive --no-clobber  -e robots=off --restrict-file-names=windows --no-parent -R "index.html*" "$url"
+wget -P "./storage/shared/media/wget/" -c --mirror --recursive -e robots=off --restrict-file-names=windows --no-parent -R "index.html*" "$url"
 else
 if [ "$n" == '5' ]; then 
 [ ! -d "./storage/shared/media/spotdl" ] && mkdir "./storage/shared/media/spotdl"
