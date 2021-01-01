@@ -3,7 +3,7 @@ clear
 url=$1
 echo "   All-in-one Download Script by C-Rock"
 echo "═ ═ ═ ═ ═ Last updated 1 Jan 2021 ═ ═ ═ ═ ═ ═"
-echo "\e[036m" "╔═══════════ Select an Option ═══════════════"
+echo -e "\e[036m" "╔═══════════ Select an Option ═══════════════"
 echo "╠═➤ 1: Download with youtube-dlc"
 echo "╠═➤ 2: Download with ffmpeg(m3u8/m3u)"
 echo "╠═➤ 3: Download page with wget (Recursive)"
